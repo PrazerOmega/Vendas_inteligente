@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Vendas Inteligentes</string>
+    <string name="menu_livro_caixa">Livro-caixa</string>
+    <string name="menu_produtos">Produtos</string>
+    <string name="menu_clientes">Clientes</string>
+    <string name="menu_historico">Histórico</string>
+</resources>

@@ -1,0 +1,609 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 5,
+    "identityHash": "9a2ce849e2b5a0a38e73de39e61d48b1",
+    "entities": [
+      {
+        "tableName": "produtos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nome` TEXT NOT NULL COLLATE NOCASE, `variante` TEXT COLLATE NOCASE, `custoAquisicaoCentavos` INTEGER NOT NULL, `precoVendaCentavos` INTEGER NOT NULL, `estoqueAtual` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nome",
+            "columnName": "nome",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "variante",
+            "columnName": "variante",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "custoAquisicaoCentavos",
+            "columnName": "custoAquisicaoCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "precoVendaCentavos",
+            "columnName": "precoVendaCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "estoqueAtual",
+            "columnName": "estoqueAtual",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_produtos_nome_variante",
+            "unique": true,
+            "columnNames": [
+              "nome",
+              "variante"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_produtos_nome_variante` ON `${TABLE_NAME}` (`nome`, `variante`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "clientes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nome` TEXT NOT NULL COLLATE NOCASE, `nomeNormalizado` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nome",
+            "columnName": "nome",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomeNormalizado",
+            "columnName": "nomeNormalizado",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_clientes_nomeNormalizado",
+            "unique": true,
+            "columnNames": [
+              "nomeNormalizado"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_clientes_nomeNormalizado` ON `${TABLE_NAME}` (`nomeNormalizado`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "movimentacoes_conta",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `clienteId` INTEGER NOT NULL, `tipo` TEXT NOT NULL, `valorCentavos` INTEGER NOT NULL, `dataHoraOcorrencia` INTEGER NOT NULL, `dataHoraRegistro` INTEGER NOT NULL, `descricao` TEXT NOT NULL, `vendaId` INTEGER, FOREIGN KEY(`clienteId`) REFERENCES `clientes`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clienteId",
+            "columnName": "clienteId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipo",
+            "columnName": "tipo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "valorCentavos",
+            "columnName": "valorCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dataHoraOcorrencia",
+            "columnName": "dataHoraOcorrencia",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dataHoraRegistro",
+            "columnName": "dataHoraRegistro",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descricao",
+            "columnName": "descricao",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vendaId",
+            "columnName": "vendaId",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_movimentacoes_conta_clienteId",
+            "unique": false,
+            "columnNames": [
+              "clienteId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_movimentacoes_conta_clienteId` ON `${TABLE_NAME}` (`clienteId`)"
+          },
+          {
+            "name": "index_movimentacoes_conta_dataHoraOcorrencia",
+            "unique": false,
+            "columnNames": [
+              "dataHoraOcorrencia"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_movimentacoes_conta_dataHoraOcorrencia` ON `${TABLE_NAME}` (`dataHoraOcorrencia`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "clientes",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "clienteId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "vendas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `clienteId` INTEGER NOT NULL, `dataHoraOcorrencia` INTEGER NOT NULL, `dataHoraRegistro` INTEGER NOT NULL, `valorTotalCentavos` INTEGER NOT NULL, `observacao` TEXT, FOREIGN KEY(`clienteId`) REFERENCES `clientes`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clienteId",
+            "columnName": "clienteId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dataHoraOcorrencia",
+            "columnName": "dataHoraOcorrencia",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dataHoraRegistro",
+            "columnName": "dataHoraRegistro",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "valorTotalCentavos",
+            "columnName": "valorTotalCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "observacao",
+            "columnName": "observacao",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_vendas_clienteId",
+            "unique": false,
+            "columnNames": [
+              "clienteId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_vendas_clienteId` ON `${TABLE_NAME}` (`clienteId`)"
+          },
+          {
+            "name": "index_vendas_dataHoraOcorrencia",
+            "unique": false,
+            "columnNames": [
+              "dataHoraOcorrencia"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_vendas_dataHoraOcorrencia` ON `${TABLE_NAME}` (`dataHoraOcorrencia`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "clientes",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "clienteId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "itens_venda",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `vendaId` INTEGER NOT NULL, `produtoId` INTEGER NOT NULL, `nomeProdutoSnapshot` TEXT NOT NULL, `varianteSnapshot` TEXT, `quantidade` INTEGER NOT NULL, `precoUnitarioCentavos` INTEGER NOT NULL, `custoUnitarioCentavos` INTEGER NOT NULL, `valorTotalItemCentavos` INTEGER NOT NULL, FOREIGN KEY(`vendaId`) REFERENCES `vendas`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`produtoId`) REFERENCES `produtos`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vendaId",
+            "columnName": "vendaId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "produtoId",
+            "columnName": "produtoId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nomeProdutoSnapshot",
+            "columnName": "nomeProdutoSnapshot",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "varianteSnapshot",
+            "columnName": "varianteSnapshot",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "quantidade",
+            "columnName": "quantidade",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "precoUnitarioCentavos",
+            "columnName": "precoUnitarioCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "custoUnitarioCentavos",
+            "columnName": "custoUnitarioCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "valorTotalItemCentavos",
+            "columnName": "valorTotalItemCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_itens_venda_vendaId",
+            "unique": false,
+            "columnNames": [
+              "vendaId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_itens_venda_vendaId` ON `${TABLE_NAME}` (`vendaId`)"
+          },
+          {
+            "name": "index_itens_venda_produtoId",
+            "unique": false,
+            "columnNames": [
+              "produtoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_itens_venda_produtoId` ON `${TABLE_NAME}` (`produtoId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "vendas",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "vendaId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "produtos",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "produtoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "rascunho_livro_caixa",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `texto` TEXT NOT NULL, `dataHoraInicioRascunho` INTEGER NOT NULL, `dataHoraUltimaModificacao` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "texto",
+            "columnName": "texto",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dataHoraInicioRascunho",
+            "columnName": "dataHoraInicioRascunho",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dataHoraUltimaModificacao",
+            "columnName": "dataHoraUltimaModificacao",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "compras_nota",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `fornecedor` TEXT, `numeroNota` TEXT, `dataHoraCompra` INTEGER NOT NULL, `dataHoraRegistro` INTEGER NOT NULL, `valorTotalCentavos` INTEGER NOT NULL, `observacao` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fornecedor",
+            "columnName": "fornecedor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "numeroNota",
+            "columnName": "numeroNota",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dataHoraCompra",
+            "columnName": "dataHoraCompra",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dataHoraRegistro",
+            "columnName": "dataHoraRegistro",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "valorTotalCentavos",
+            "columnName": "valorTotalCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "observacao",
+            "columnName": "observacao",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_compras_nota_dataHoraCompra",
+            "unique": false,
+            "columnNames": [
+              "dataHoraCompra"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_compras_nota_dataHoraCompra` ON `${TABLE_NAME}` (`dataHoraCompra`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "itens_compra",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `compraId` INTEGER NOT NULL, `produtoId` INTEGER, `nomeProdutoSnapshot` TEXT NOT NULL, `varianteSnapshot` TEXT, `quantidade` INTEGER NOT NULL, `custoUnitarioCentavos` INTEGER NOT NULL, `valorTotalItemCentavos` INTEGER NOT NULL, FOREIGN KEY(`compraId`) REFERENCES `compras_nota`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`produtoId`) REFERENCES `produtos`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "compraId",
+            "columnName": "compraId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "produtoId",
+            "columnName": "produtoId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nomeProdutoSnapshot",
+            "columnName": "nomeProdutoSnapshot",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "varianteSnapshot",
+            "columnName": "varianteSnapshot",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "quantidade",
+            "columnName": "quantidade",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "custoUnitarioCentavos",
+            "columnName": "custoUnitarioCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "valorTotalItemCentavos",
+            "columnName": "valorTotalItemCentavos",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_itens_compra_compraId",
+            "unique": false,
+            "columnNames": [
+              "compraId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_itens_compra_compraId` ON `${TABLE_NAME}` (`compraId`)"
+          },
+          {
+            "name": "index_itens_compra_produtoId",
+            "unique": false,
+            "columnNames": [
+              "produtoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_itens_compra_produtoId` ON `${TABLE_NAME}` (`produtoId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "compras_nota",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "compraId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "produtos",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "produtoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9a2ce849e2b5a0a38e73de39e61d48b1')"
+    ]
+  }
+}
